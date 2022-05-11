@@ -18,6 +18,8 @@ node_modules
 # local env files
 .env.local
 .env.*.local
+/web.config
+/Technical Test - Feb 2021.pdf
 
 # Log files
 npm-debug.log*
