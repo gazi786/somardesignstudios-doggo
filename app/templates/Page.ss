@@ -6,6 +6,7 @@
   <% base_tag %>
   <title>Doggo</title>
   <meta name="description" content="$SiteConfig.MetaDescription"/>
+  <link type="text/css" rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
   <link href='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet' />
 </head>
 <body data-app-settings="$appSettings">

@@ -30,8 +30,9 @@ body {
 }
 
 .container {
-  flex: 1 1 auto;
-  display: flex;
+  flex: 1 1 auto !important;
+  display: flex !important;
+  max-width: 100% !important;
 
   .main {
     flex: 1 1 auto;

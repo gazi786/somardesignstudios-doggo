@@ -23,6 +23,7 @@ class Park extends DataObject implements JsonSerializable
 
     private static $summary_fields = [
         'Title' => 'Title',
+        'Provider' => 'Provider',
     ];
 
     private static $indexes = [

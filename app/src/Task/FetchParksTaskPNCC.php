@@ -57,15 +57,13 @@ class FetchParksTaskPNCC extends BuildTask
                 $parkObject->ProviderCode = $park->properties->OBJECTID;
             }
 
-             if ($park->properties->RESERVE_NAME === null) {
+             if ($park->properties->RESERVE_NAME === null || $park->properties->RESERVE_NAME === ' ') {
                 continue;
             }
 
-            if ($park->properties->DESCRIPTION === 'Dog on leash area') {
+            if ($park->properties->DESCRIPTION === 'Dog on leash area' || $park->properties->DESCRIPTION === 'Leased area') {
                 $leash = 'On-leash';
             } elseif ($park->properties->DESCRIPTION === 'Dogs prohibited') {
-                continue;
-            } elseif ($park->properties->DESCRIPTION === 'Leased area') {
                 continue;
             } else {
                 $leash = 'Off-leash';
