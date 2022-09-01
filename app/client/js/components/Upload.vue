@@ -1,15 +1,17 @@
 <template>
-  <div id="uploadPhoto">
-    <p>Share your dogs' experience.</p>
-    <input
-      style="display: none"
-      type="file" @change="onFileChanged"
-    ref="fileInput">
-    <button @click="$refs.fileInput.click()">Select your Photo</button>
-    <button @click="onUpload">Upload!</button>
+  <form @submit.prevent="onUpload" method="POST" enctype="multipart/form-data">
+    <div id="uploadPhoto">
+      <p>Share your dogs' experience.</p>
+      <input
+        style="display: none"
+        type="file" @change="onFileChanged"
+      ref="fileInput">
+      <button @click="$refs.fileInput.click()">Select your Photo</button>
+      <button type="submit">Upload!</button>
 
-    <div id="output" ref="outputMessage" class="message"></div>
-  </div>
+      <div id="output" ref="outputMessage" class="message"></div>
+    </div>
+  </form>
 </template>
 
 <script>
@@ -18,25 +20,27 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      selectedFile: null
+      selectedFile: null,
+      imageURL: null,
+
     };
   },
   methods: {
     onFileChanged (event) {
-      this.selectedFile = event.target.files[0]
+      this.selectedFile = event.target.files[0];
     },
     onUpload() {
       const output = this.$refs.outputMessage;
       // upload file, get it from this.selectedFile
       const formData = new FormData()
-      formData.append('myFile', this.selectedFile, this.selectedFile.name);
+      formData.append('selectedFile', this.selectedFile, this.selectedFile.name);
       const config = {
         headers: { 'content-type': 'multipart/form-data' },
         onUploadProgress: uploadEvent => {
           const percentCompleted = ('Upload Progress:'+ Math.round((uploadEvent.loaded/uploadEvent.total)*100)+'%');
         }
       };
-      axios.post('http://localhost:8080/public/assets/gallery', formData, config)
+      axios.post('photoUpload', formData, config)
         .then(response => {
           output.className = 'message';
           output.innerHTML = response.data;
@@ -45,6 +49,8 @@ export default {
           output.className = 'message text-danger';
           output.innerHTML = error.message;
         });
+
+        this.$emit('selectedFile',formData, selectedFile);
     }
   },
 };

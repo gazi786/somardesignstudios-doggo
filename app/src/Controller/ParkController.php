@@ -3,17 +3,18 @@
 namespace Doggo\Controller;
 
 use Doggo\Model\Park;
+use Doggo\Model\PhotoGallery;
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Control\HTTPResponse;
 
-class ParkController extends Controller 
+class ParkController extends Controller
 {
     private static $allowed_actions = [
         'index',
     ];
 
-    public function index(HTTPRequest $request) 
+    public function index(HTTPRequest $request)
     {
         if (!$request->isGET()) {
             return $this->json(['error' => 'Method not allowed'], 405);
@@ -55,5 +56,10 @@ class ParkController extends Controller
             ->addHeader('Content-Type', 'application/json');
 
         return $response;
+    }
+
+    public function GalleryImages()
+    {
+        return PhotoGallery::get();
     }
 }

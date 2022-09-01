@@ -6,7 +6,7 @@ use SilverStripe\ORM\DataObject;
 
 class PhotoGallery extends DataObject
 {
-    private static $table_name = 'ParkGallery';
+    private static $table_name = 'PhotoGallery';
 
     private static $db = [
         'Title' => 'Varchar',
@@ -20,3 +20,4 @@ class PhotoGallery extends DataObject
     ];
 
 }
+  

@@ -36,5 +36,9 @@ export default new Vuex.Store({
           });
       });
     },
+
+    async uploadImage(context, payLoad) {
+
+    }
   },
 });

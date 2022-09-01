@@ -6,39 +6,39 @@ use Doggo\Model\PhotoGallery;
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Control\HTTPResponse;
+use SilverStripe\ErrorPage;
+use SilverStripe\Assets\Folder;
+use SilverStripe\Assets\File;
+use SilverStripe\Assets\Upload;
+use SilverStripe\Security\Security;
+use SilverStripe\Security\Group;
+use SilverStripe\Assets\Storage\AssetStore;
+use  SilverStripe\Core\Convert;
 
 class PhotoGalleryController extends Controller
 {
     private static $allowed_actions = [
-        'index',
+        'store',
     ];
 
-    public function index(HTTPRequest $request)
+    public function store(HTTPRequest $request)
     {
-        if (!$request->isGET()) {
-            return $this->json(['error' => 'Method not allowed'], 405);
+        if (!$request->isPOST()) {
+            return $this->httpError(403);
         }
-
-        $imageName = time().'.'.$request->image->getClientOriginalExtension();
-
-        $request->image->move(public_path('images'), $imageName);
-
-    	return response()->json(['success'=>'You have successfully upload image.']);
-
-       /* $id = $request->param('ID');
-
-        if (empty($id)) {
-            $parks = Park::get()->toArray();
-            return $this->json($parks);
+        if (!$this->canAttachExisting()) {
+            return $this->httpError(403);
         }
-
-        $park = Park::get_by_id($id);
-
-        if (!$park) {
-            return $this->json(['error' => 'Park does not exist'], 404);
+        // Retrieve file attributes required by front end
+        $return = array();
+        $files = File::get()->byIDs($request->postVar('ids'));
+        foreach ($files as $file) {
+            $return[] = $this->encodeFileAttributes($file);
         }
+        $response = new HTTPResponse(Convert::raw2json($return));
+        $response->addHeader('Content-Type', 'application/json');
 
-        return $this->json($park);*/
+        return $response;
     }
 
     /**
